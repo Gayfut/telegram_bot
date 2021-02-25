@@ -1,6 +1,6 @@
-from y_parser.parser import Parser
+from bot.bot import Bot
 
 
-parser = Parser()
-parser.start_parse()
-parser.stop_parse()
+if __name__ == "__main__":
+    bot = Bot()
+    bot.start_bot()

@@ -44,7 +44,8 @@ class Parser:
 
         video_links = self.__get_links()
         info_about_videos = self.__get_info_about_videos(video_links)
-        print(info_about_videos)
+
+        return info_about_videos
 
     def __open_site(self):
         """open site for parsing"""
@@ -93,7 +94,7 @@ class Parser:
     def __get_info_about_video(self, video_link):
         """return info about a one video"""
         self.__browser.get(video_link)
-        sleep(1)
+        sleep(2)
 
         title = (
             self.__browser.find_element_by_css_selector(title_selector)
