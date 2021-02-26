@@ -1,3 +1,4 @@
+"""main file for control application"""
 from bot.bot import Bot
 
 

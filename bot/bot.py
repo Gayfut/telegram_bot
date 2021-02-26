@@ -1,3 +1,4 @@
+"""file for control bot and his specification"""
 from telebot import TeleBot
 from time import sleep
 from y_parser.parser import Parser
@@ -5,16 +6,31 @@ from bot.token import API_token, password
 
 
 class Bot:
+    """control bot"""
 
-    PASSWORD = password
     SUCCESS_USERS_ID = []
 
     def __init__(self):
         self.__bot = TeleBot(API_token)
         self.__parser = Parser()
 
+        @self.__bot.message_handler(commands=["help"])
+        def __show_help(message):
+            """show info about bot through /help command"""
+            if message.from_user.id in self.SUCCESS_USERS_ID:
+                self.__bot.send_message(
+                    message.chat.id,
+                    "Bot for getting info about science videos on Youtube. For start work write /parse.",
+                )
+            else:
+                self.__bot.send_message(
+                    message.chat.id,
+                    "Bot for getting info about science videos on Youtube. For more info, auth through /start.",
+                )
+
         @self.__bot.message_handler(commands=["start"])
         def __start_work(message):
+            """start interaction with user and check his status"""
             if message.from_user.id in self.SUCCESS_USERS_ID:
                 self.__bot.send_message(message.chat.id, "Access is allowed!")
             else:
@@ -22,7 +38,8 @@ class Bot:
                 self.__bot.register_next_step_handler(message_from_user, __auth_to_bot)
 
         def __auth_to_bot(message):
-            if message.text == self.PASSWORD:
+            """checks the password for correctness"""
+            if message.text == password:
                 self.__bot.send_message(
                     message.chat.id, "Access is allowed! Choose command."
                 )
@@ -33,7 +50,8 @@ class Bot:
                 )
 
         @self.__bot.message_handler(commands=["parse"])
-        def __start_parsing(message):
+        def __parsing(message):
+            """start parsing and show result"""
             if message.from_user.id in self.SUCCESS_USERS_ID:
                 self.__bot.send_message(
                     message.chat.id, "Parsing start. Please, await!"
@@ -69,7 +87,9 @@ class Bot:
                 )
 
     def __get_info_about_videos(self):
+        """return parsing result"""
         return self.__parser.start_parse()
 
     def start_bot(self):
+        """start bot working"""
         self.__bot.polling()
