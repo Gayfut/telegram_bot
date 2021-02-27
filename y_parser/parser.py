@@ -1,8 +1,6 @@
 """file for control parser and his specification"""
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-
-# from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import StaleElementReferenceException
 from time import sleep
 
